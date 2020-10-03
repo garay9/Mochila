@@ -46,6 +46,7 @@ void quickSort(struct Objeto *arr, int low, int high)
 }
 
 void greedy2(struct Objeto *objetos, int size, int pesoMax){
+    int valorTotal = 0;
     int pesoActual = 0;
     int contadorCantidad = 0;
     quickSort(objetos, 0, size-1);
@@ -53,9 +54,10 @@ void greedy2(struct Objeto *objetos, int size, int pesoMax){
     for (int i = 0; i < size && pesoActual <= pesoMax; i++)
     {
         printf("%s :", objetos[i].nombre);
-        while (objetos[i].cantidad > 0 && pesoActual + objetos[i].costo <= pesoMax)
+        while (objetos[i].cantidad != 0 && pesoActual + objetos[i].costo <= pesoMax)
         {
             objetos[i].cantidad -= 1;
+            valorTotal += objetos[i].valor;
             contadorCantidad += 1;
             pesoActual += objetos[i].costo;
         }
@@ -63,6 +65,7 @@ void greedy2(struct Objeto *objetos, int size, int pesoMax){
         contadorCantidad = 0;
     }
     printf("Peso total usado: %d\n", pesoActual);
+    printf("Valor conseguido: %d\n", valorTotal);
 }
 int main(int argc, char *argv[])
 {
@@ -74,7 +77,7 @@ int main(int argc, char *argv[])
 
     anillo.valor = 15000;
     anillo.costo = 1;
-    anillo.cantidad = 3;
+    anillo.cantidad = -1;
     anillo.relacion = (float)anillo.valor / (float)anillo.costo;
     strcpy(anillo.nombre, "Anillo");
 
