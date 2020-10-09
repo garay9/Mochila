@@ -74,7 +74,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
 }
 
    
-}
+
 
 /*
 int main(int argc, char *argv[]){
