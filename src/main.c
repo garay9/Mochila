@@ -45,7 +45,7 @@ struct Objeto
 double** getData(){
     double **resultData = (double**) malloc(sizeof(double*)* (rows-1) * cols);
     GtkSpinButton* spin;
-    //fflush(stdout); 
+    fflush(stdout); 
     for(int i = 1; i < rows; i++){
         //printf("valor %d\n", sizeof(double)*cols);
         resultData[i] = (double*) malloc(sizeof(resultData[i]) * cols);
