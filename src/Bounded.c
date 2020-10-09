@@ -14,6 +14,7 @@ struct Objeto
 };
 
 void dinamic(struct Objeto *objetos, int productos, int pesoMax){
+    pesoMax++;
     int Table[pesoMax][productos];
     int Llevar[pesoMax][productos];
 
@@ -29,7 +30,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             int max = Table[i][j-1];
             Llevar[i][j] = 0;
             for(int e = 1; e <= Q; e++){
-                int temp = e * objetos[j].valor + Table[i-1 * objetos[j].costo][j-1];
+                int temp = e * objetos[j].valor + Table[i-e * objetos[j].costo][j-1];
                 if (temp > max){ 
                     max = temp;
                     Llevar[i][j] = e;
@@ -53,11 +54,35 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
         }
         printf("\n");
     }
-    
+    printf("_____________________________________________\n");
 }
 
 
 int main(int argc, char *argv[]){
+    struct Objeto *objetos = malloc(2048);
+    struct Objeto galletas;
+    struct Objeto medias;
+    struct Objeto botella;
+    
+    galletas.valor = 12;
+    galletas.costo = 5;
+    galletas.cantidad = 99;
+    strcpy(galletas.nombre, "Galletas");
+
+    botella.valor = 11;
+    botella.costo = 4;
+    botella.cantidad = 99;
+    strcpy(botella.nombre, "Botella");
+
+    medias.valor = 7;
+    medias.costo = 3;
+    medias.cantidad = 99;
+    strcpy(medias.nombre, "Medias");
+
+    objetos[0] = botella;
+    objetos[1] = medias;
+    objetos[2] = galletas;
+
     struct Objeto *elementos = malloc(2048);
     struct Objeto anillo;
     struct Objeto poster;
@@ -88,5 +113,6 @@ int main(int argc, char *argv[]){
     elementos[1] = radio;
     elementos[2] = poster;
     elementos[3] = anillo;
-    dinamic(elementos, 4, 9);
+    dinamic(elementos, 4, 8);
+    dinamic(objetos, 3, 10);
 }
