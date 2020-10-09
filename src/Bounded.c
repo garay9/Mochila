@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
@@ -10,13 +13,20 @@ struct Objeto
     int valor;
     int costo;
     int cantidad;
-    char nombre[256];
+    float relacion;
 };
+
+extern GtkWidget *dynamicGrid; 
+extern int rows;
+extern int cols;
+void dinamic(struct Objeto *objetos, int productos, int pesoMax);
 
 void dinamic(struct Objeto *objetos, int productos, int pesoMax){
     int Table[pesoMax][productos];
     int Llevar[pesoMax][productos];
-
+    GdkColor colorFg;
+    GdkColor colorBg;
+    gdk_color_parse ("white", &colorFg);
     for (int i = 0; i < pesoMax; i++){
         int cant = i/objetos[0].costo; 
         Table[i][0] = objetos[0].valor * cant;
@@ -39,24 +49,31 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             Table[i][j] = max;
         }       
     }
-
-    for(int i = 0; i < pesoMax; i++){
+    GtkWidget *label;
+    for(int i = 0; i < pesoMax + 1; i++){
         for(int j = 0; j < productos; j++){
-            printf("%d \t\t", Table[i][j]); 
-        }
-        printf("\n");
-    }
+            char data[182];
+            sprintf(data, "%d", Table[i][j]);
 
-    for(int i = 0; i < pesoMax; i++){
-        for(int j = 0; j < productos; j++){
-            printf("%d \t\t", Llevar[i][j]); 
+            if(Llevar[i][j] == 0) 
+                gdk_color_parse ("red", &colorBg);
+            else
+                gdk_color_parse ("#1188F0", &colorBg);
+            
+            label  =  gtk_label_new (data);
+            gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+            gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+            gtk_widget_set_size_request(label, 50, 40);
+            gtk_grid_attach (GTK_GRID(dynamicGrid), label, j, i+1,1,1);
         }
-        printf("\n");
+        
     }
-    
+    gtk_widget_show_all(dynamicGrid); 
+
+   
 }
 
-
+/*
 int main(int argc, char *argv[]){
     struct Objeto *elementos = malloc(2048);
     struct Objeto anillo;
@@ -90,3 +107,4 @@ int main(int argc, char *argv[]){
     elementos[3] = anillo;
     dinamic(elementos, 4, 9);
 }
+*/

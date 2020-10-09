@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <math.h>
+
+extern struct Objeto;
 
 struct Objeto
 {
@@ -8,7 +13,6 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
-    char nombre[256];
 };
 
 void swap(struct Objeto *a, struct Objeto *b)
