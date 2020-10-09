@@ -45,16 +45,16 @@ struct Objeto
 double** getData(){
     double **resultData = (double**) malloc(sizeof(double*)* (rows-1) * cols);
     GtkSpinButton* spin;
-    printf("xd\n");
+    //fflush(stdout); 
     for(int i = 1; i < rows; i++){
-        printf("valor %d\n", sizeof(double)*cols);
+        //printf("valor %d\n", sizeof(double)*cols);
         resultData[i] = (double*) malloc(sizeof(resultData[i]) * cols);
         for(int j = 0; j < cols; j++){
             spin = GTK_SPIN_BUTTON(gtk_grid_get_child_at (objectsGrid, j, i));
             resultData[i-1][j] = gtk_spin_button_get_value (spin);
-            printf("Valor %f  ", resultData[i-1][j]);
+            //printf("Valor %f  ", resultData[i-1][j]);
         }
-        printf("\n");
+        //printf("\n");
     }
     return resultData;
 }
@@ -111,7 +111,6 @@ void addButton_clicked_cb(GtkButton *b){
     gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, -1, 99, 1, 1, 1), 1, 3), 1, rows,1,1);
     gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, -1, 99, 1, 1, 1), 1, 3), 2, rows,1,1);
     rows++;
-    printf("Rows: %d\n", rows);
     gtk_widget_show_all (objectsGrid);
     
 }

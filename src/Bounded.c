@@ -70,7 +70,6 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
         
     }
     gtk_widget_show_all(dynamicGrid); 
-    printf("_____________________________________________\n");
 }
 
    
