@@ -86,17 +86,14 @@ int main(int argc, char *argv[]){
     galletas.valor = 12;
     galletas.costo = 5;
     galletas.cantidad = 99;
-    strcpy(galletas.nombre, "Galletas");
 
     botella.valor = 11;
     botella.costo = 4;
     botella.cantidad = 99;
-    strcpy(botella.nombre, "Botella");
 
     medias.valor = 7;
     medias.costo = 3;
     medias.cantidad = 99;
-    strcpy(medias.nombre, "Medias");
 
     objetos[0] = botella;
     objetos[1] = medias;
@@ -111,22 +108,18 @@ int main(int argc, char *argv[]){
     anillo.valor = 15000;
     anillo.costo = 1;
     anillo.cantidad = 1;
-    strcpy(anillo.nombre, "Anillo");
 
     poster.valor = 5000;
     poster.costo = 4;
     poster.cantidad = 1;
-    strcpy(poster.nombre, "Poster");
 
     radio.valor = 9000;
     radio.costo = 3;
     radio.cantidad = 1;
-    strcpy(radio.nombre, "Radio");
 
     candelabro.valor = 10000;
     candelabro.costo = 5;
     candelabro.cantidad = 1;
-    strcpy(candelabro.nombre, "Candelabro");
 
     elementos[0] = candelabro;
     elementos[1] = radio;
