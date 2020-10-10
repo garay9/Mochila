@@ -40,6 +40,38 @@ struct Objeto
 };
 
 
+
+/*********************************
+ *                               *
+ *                               *
+ *             ERRORS            *
+ *                               *
+ *********************************/
+
+void showDialog(){
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *label;
+
+  gint response_id;
+
+  dialog = gtk_dialog_new_with_buttons ("!!!!", 
+                                        window, 
+                                        GTK_DIALOG_MODAL, 
+                                        "pum pum pum", 
+                                        GTK_RESPONSE_OK, 
+                                        NULL);
+
+  content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+  label = gtk_label_new ("Quantity cannot be 0 :0");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  gtk_widget_show_all (dialog);
+  
+
+  g_signal_connect (GTK_DIALOG (dialog), "response", G_CALLBACK (gtk_widget_destroy), NULL);
+}
+
 /*********************************
  *                               *
  *                               *
@@ -86,7 +118,16 @@ void runAlgorithms(double **matrix){
  
         objeto.costo =  matrix[i][0]; 
         objeto.valor =  matrix[i][1];
-        objeto.cantidad = (int) matrix[i][2];
+        if(matrix[i][2] == 0){
+            showDialog();
+            return;
+        } 
+        else if(matrix[i][2] == -1){
+            objeto.cantidad = 2147483647; 
+        }
+        else{
+            objeto.cantidad = (int) matrix[i][2];
+        }
         objeto.relacion = ((float) objeto.valor / (float) objeto.costo);
         //printf("\n");
         elements[i] = objeto;
