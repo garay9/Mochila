@@ -39,10 +39,11 @@
     <property name="stock">gtk-save-as</property>
   </object>
   <object class="GtkWindow" id="mainWindow">
-    <property name="width_request">1200</property>
-    <property name="height_request">750</property>
+    <property name="width_request">1400</property>
+    <property name="height_request">800</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
+    <property name="startup_id">Hila</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -230,7 +231,7 @@
         </child>
         <child>
           <object class="GtkScrolledWindow" id="dynamicScroll">
-            <property name="width_request">500</property>
+            <property name="width_request">400</property>
             <property name="height_request">450</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -278,7 +279,7 @@
             </child>
           </object>
           <packing>
-            <property name="x">665</property>
+            <property name="x">620</property>
             <property name="y">160</property>
           </packing>
         </child>
@@ -309,6 +310,146 @@
           <packing>
             <property name="x">580</property>
             <property name="y">100</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="greedy1Scroll">
+            <property name="name">greedy1Scroll</property>
+            <property name="width_request">320</property>
+            <property name="height_request">210</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="greedy1ViewPort">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkGrid" id="gridGreedy1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">1050</property>
+            <property name="y">160</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="greedy2Scroll">
+            <property name="name">greedy2Scroll</property>
+            <property name="width_request">320</property>
+            <property name="height_request">210</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="greedy2ViewPort">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkGrid" id="gridGreedy2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">1050</property>
+            <property name="y">400</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="greedy1Label">
+            <property name="width_request">100</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Greedy 1</property>
+            <attributes>
+              <attribute name="font-desc" value="Ubuntu Light 10"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">1056</property>
+            <property name="y">114</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="greedy2Label">
+            <property name="width_request">100</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Greedy 2
+</property>
+            <property name="justify">right</property>
+            <attributes>
+              <attribute name="font-desc" value="Ubuntu Light 10"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">1056</property>
+            <property name="y">375</property>
           </packing>
         </child>
       </object>

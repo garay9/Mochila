@@ -23,7 +23,7 @@ LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic
 OBJS=    main.o
 
 all: $(OBJS)
-	$(LD) -o $(TARGET) $(OBJS) src/Bounded.c $(LDFLAGS)
+	$(LD) -o $(TARGET) $(OBJS) src/Bounded.c src/greedy1.c src/greedy2.c $(LDFLAGS)
     
 main.o: src/main.c
 	$(CC) -c $(CCFLAGS) src/main.c $(GTKLIB) -o main.o -lm

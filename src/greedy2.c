@@ -5,11 +5,12 @@
 #include <gdk/gdk.h>
 #include <math.h>
 
-extern struct Objeto;
+
+extern GtkWidget *gridGreedy2;
 
 struct Objeto
 {
-    int valor;
+    float valor;
     int costo;
     int cantidad;
     float relacion;
@@ -50,14 +51,23 @@ void quickSort(struct Objeto *arr, int low, int high)
 }
 
 void greedy2(struct Objeto *objetos, int size, int pesoMax){
-    int valorTotal = 0;
+
+    GdkColor colorBg;
+    GdkColor colorFg;
+    gdk_color_parse ("#E68110", &colorBg);
+    gdk_color_parse ("white", &colorFg);
+
+    float valorTotal = 0;
     int pesoActual = 0;
     int contadorCantidad = 0;
     quickSort(objetos, 0, size-1);
-
+    char variableResult[pesoMax*2+1];
+    char labelResult[sizeof(variableResult)* size];
+     memset(labelResult, 0, sizeof(variableResult)* size);
+    strcpy(labelResult,"x");
     for (int i = 0; i < size && pesoActual <= pesoMax; i++)
     {
-        printf("%s :", objetos[i].nombre);
+       // printf("%s :", objetos[i].nombre);
         while (objetos[i].cantidad != 0 && pesoActual + objetos[i].costo <= pesoMax)
         {
             objetos[i].cantidad -= 1;
@@ -65,12 +75,43 @@ void greedy2(struct Objeto *objetos, int size, int pesoMax){
             contadorCantidad += 1;
             pesoActual += objetos[i].costo;
         }
-        printf("%d usados\n", contadorCantidad);
+        printf("mmm ok %f\n", valorTotal);
+        strcat(labelResult,"x");
+        memset(variableResult, 0, pesoMax*2+1);
+        sprintf(variableResult, "%d", i);
+        strcat(labelResult, variableResult);
+        strcat(labelResult, " = ");
+        memset(variableResult, 0, pesoMax+1);
+        sprintf(variableResult, "%d", contadorCantidad);
+        strcat(labelResult, variableResult);
+        strcat(labelResult, " ");
+
+      
         contadorCantidad = 0;
     }
+
+        GtkWidget *label;
+
+        label =  gtk_label_new (labelResult); 
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+        gtk_widget_set_size_request(label, size*50, 40);
+        gtk_grid_attach (GTK_GRID(gridGreedy2), label, 0, 1,1,1);
+        
+        memset(variableResult, 0, pesoMax+1);
+        sprintf(variableResult, "%f", valorTotal);
+        gdk_color_parse ("#E6C610", &colorBg);
+        label =  gtk_label_new (variableResult);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+        gtk_grid_attach (GTK_GRID(gridGreedy2), label, 0, 2,1,1);
+
+        gtk_widget_show_all(gridGreedy2); 
     printf("Peso total usado: %d\n", pesoActual);
     printf("Valor conseguido: %d\n", valorTotal);
 }
+
+/*
 int main(int argc, char *argv[])
 {
     struct Objeto *elementos = malloc(2048);
@@ -111,4 +152,4 @@ int main(int argc, char *argv[])
     
 
     return 0;
-}
+}*/

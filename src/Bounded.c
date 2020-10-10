@@ -52,7 +52,8 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
     }
    
     for(int i = 0; i < pesoMax ; i++){
-         GtkWidget *label;
+         
+        GtkWidget *label;
         char temp[48];
         sprintf(temp, "%d", i);
         gdk_color_parse ("#BA11FF", &colorBg);
@@ -64,7 +65,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
 
         for(int j = 0; j < productos; j++){
             char data[182];
-            printf("Data Actual: %d", Table[i][j]);   
+   
             sprintf(data, "%d", Table[i][j]);
 
             if(Llevar[i][j] == 0) 
@@ -78,7 +79,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             gtk_widget_set_size_request(label, 50, 40);
             gtk_grid_attach (GTK_GRID(dynamicGrid), label, j+1, i+1,1,1);
         }
-        printf("\n");
+
         
     }
   //  fflush(stdout);

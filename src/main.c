@@ -13,8 +13,12 @@ GtkWidget *window;
 GtkBuilder *builder;
 GtkWidget *objectsScroll;
 GtkWidget *dynamicScroll;
+GtkWidget *greedy1Scroll;
+GtkWidget *greedy2Scroll;
 GtkWidget *objectsGrid;
 GtkWidget *dynamicGrid;
+GtkWidget *gridGreedy1;
+GtkWidget *gridGreedy2;
 
 GtkWidget *addButton;
 GtkWidget *removeButton;
@@ -79,6 +83,39 @@ void showDialog(){
  *                               *
  *********************************/
 
+void loadGreedy1Equation(struct Objeto *objetos, GtkWidget *grid){
+    GdkColor colorBg;
+    GdkColor colorFg;
+    gdk_color_parse ("#F34614", &colorBg);
+    gdk_color_parse ("white", &colorFg);
+
+    char equation[rows*100];
+    char temp[rows*100];
+    memset(equation, 0, rows*2);
+    strcpy(equation, "Z = ");
+    for(int i = 0; i < rows-1 ; i++){
+        memset(temp, 0, rows*100);
+        sprintf(temp, "%.3f", objetos[i].valor);
+        strcat(equation, temp);
+        strcat(equation, "x");
+        memset(temp, 0, rows*100);
+        sprintf(temp, "%d", i);
+        strcat(equation, temp);
+        if(i!=rows-2) strcat(equation, " +");
+        
+    }
+        
+        GtkWidget *label;
+
+        label =  gtk_label_new (equation); 
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+        gtk_widget_set_size_request(label, 320+rows*2, 40);
+        gtk_grid_attach (GTK_GRID(grid), label, 0, 0,1,1);
+        gtk_widget_show_all(grid); 
+     
+}
+
 double** getData(){
     double **resultData = (double**) malloc(sizeof(double*)* (rows + 1) * cols);
     GtkSpinButton* spin;
@@ -129,7 +166,6 @@ void runAlgorithms(double **matrix){
             objeto.cantidad = (int) matrix[i][2];
         }
         objeto.relacion = ((float) objeto.valor / (float) objeto.costo);
-        //printf("\n");
         elements[i] = objeto;
        
         char str[48];
@@ -153,6 +189,10 @@ void runAlgorithms(double **matrix){
     }
     gtk_widget_show_all(dynamicGrid);   
     dinamic(elements, (rows - 1), knapsachSize);
+    loadGreedy1Equation(elements, gridGreedy1);
+    greedy1(elements, (rows -1), knapsachSize);
+    loadGreedy1Equation(elements, gridGreedy2);
+    greedy2(elements, (rows -1), knapsachSize);
     free(elements);
 }
 
@@ -203,6 +243,15 @@ void executeButton_clicked_cb(GtkButton *b){
  *      INITIALIZE OBJECTS       *
  *                               *
  *********************************/
+
+void initializeGreedies(){
+    greedy1Scroll = GTK_WIDGET(gtk_builder_get_object(builder, "greedy1Scroll"));
+    gridGreedy1 = GTK_WIDGET(gtk_builder_get_object(builder, "gridGreedy1"));
+
+    greedy2Scroll = GTK_WIDGET(gtk_builder_get_object(builder, "greedy2Scroll"));
+    gridGreedy2 = GTK_WIDGET(gtk_builder_get_object(builder, "gridGreedy2"));
+
+}
 
 void initializeDynamic(){
     dynamicScroll = GTK_WIDGET(gtk_builder_get_object(builder, "dynamicScroll"));
@@ -255,6 +304,7 @@ int main(int argc, char *argv[]){
     initializeWindow();
     intializeObjects();
     initializeDynamic();
+    initializeGreedies();
 
     gtk_builder_connect_signals(builder, NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
