@@ -10,7 +10,7 @@
 
 struct Objeto
 {
-    int valor;
+    float valor;
     int costo;
     int cantidad;
     float relacion;
@@ -50,10 +50,21 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             Table[i][j] = max;
         }       
     }
-    GtkWidget *label;
-    for(int i = 0; i < pesoMax + 1; i++){
+   
+    for(int i = 0; i < pesoMax ; i++){
+         GtkWidget *label;
+        char temp[48];
+        sprintf(temp, "%d", i);
+        gdk_color_parse ("#BA11FF", &colorBg);
+        label =  gtk_label_new (temp);
+        gtk_widget_set_size_request(label, 50, 40);
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+        gtk_grid_attach (GTK_GRID(dynamicGrid), label, 0, i+1,1,1);
+
         for(int j = 0; j < productos; j++){
             char data[182];
+            printf("Data Actual: %d", Table[i][j]);   
             sprintf(data, "%d", Table[i][j]);
 
             if(Llevar[i][j] == 0) 
@@ -65,10 +76,12 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
             gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
             gtk_widget_set_size_request(label, 50, 40);
-            gtk_grid_attach (GTK_GRID(dynamicGrid), label, j, i+1,1,1);
+            gtk_grid_attach (GTK_GRID(dynamicGrid), label, j+1, i+1,1,1);
         }
+        printf("\n");
         
     }
+  //  fflush(stdout);
     gtk_widget_show_all(dynamicGrid); 
 }
 

@@ -7,6 +7,8 @@
 
 int rows = 1;
 int cols = 3;
+int knapsachSize = 1;
+
 GtkWidget *window;
 GtkBuilder *builder;
 GtkWidget *objectsScroll;
@@ -22,13 +24,16 @@ GtkWidget *chooseFileButton;
 GtkWidget *cleanButton;
 GtkWidget *executeButton;
 
+GtkWidget *sizeSpinButton;
+
+
 extern void greedy1(struct Objeto *objetos, int size, int pesoMax);
 extern void greedy2(struct Objeto *objetos, int size, int pesoMax);
 extern void dinamic(struct Objeto *objetos, int productos, int pesoMax);
 
 struct Objeto
 {
-    int valor;
+    float valor;
     int costo;
     int cantidad;
     float relacion;
@@ -43,12 +48,12 @@ struct Objeto
  *********************************/
 
 double** getData(){
-    double **resultData = (double**) malloc(sizeof(double*)* (rows-1) * cols);
+    double **resultData = (double**) malloc(sizeof(double*)* (rows + 1) * cols);
     GtkSpinButton* spin;
     fflush(stdout); 
-    for(int i = 1; i < rows; i++){
+    for(int i = 1; i < rows ; i++){
         //printf("valor %d\n", sizeof(double)*cols);
-        resultData[i] = (double*) malloc(sizeof(resultData[i]) * cols);
+        resultData[i-1] = (double*) malloc(sizeof(double*) * cols);
         for(int j = 0; j < cols; j++){
             spin = GTK_SPIN_BUTTON(gtk_grid_get_child_at (objectsGrid, j, i));
             resultData[i-1][j] = gtk_spin_button_get_value (spin);
@@ -68,18 +73,24 @@ void runAlgorithms(double **matrix){
     struct Objeto *elements = malloc(size);
     struct Objeto objeto;
     GtkWidget *label;
-    for(int  i = 0; i < rows -1 ; i++){
+    label =  gtk_label_new (""); 
+
+    gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+    gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+    gtk_widget_set_size_request(label, 50, 40);
+    gtk_grid_attach (GTK_GRID(dynamicGrid), label, 0, 0,1,1);
+
+
+    for(int  i = 0; i < rows -1; i++){
  
  
-        objeto.costo = (int) matrix[i][0]; 
-
-        objeto.valor = (int) matrix[i][1];
-
+        objeto.costo =  matrix[i][0]; 
+        objeto.valor =  matrix[i][1];
         objeto.cantidad = (int) matrix[i][2];
-
         objeto.relacion = ((float) objeto.valor / (float) objeto.costo);
-
-       elements[i] = objeto;
+        //printf("\n");
+        elements[i] = objeto;
+       
         char str[48];
         
         char temp[48];
@@ -90,12 +101,17 @@ void runAlgorithms(double **matrix){
         gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
         gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
         gtk_widget_set_size_request(label, 50, 40);
-        gtk_grid_attach (GTK_GRID(dynamicGrid), label, i, 0,1,1);
+        gtk_grid_attach (GTK_GRID(dynamicGrid), label, i+1, 0,1,1);
+        label =  gtk_label_new (temp);
+        gtk_widget_set_size_request(label, 50, 40);
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
+        gtk_grid_attach (GTK_GRID(dynamicGrid), label, 0, i+1,1,1);
+
         
     }
-
     gtk_widget_show_all(dynamicGrid);   
-    dinamic(elements, (rows - 1), 8);
+    dinamic(elements, (rows - 1), knapsachSize);
     free(elements);
 }
 
@@ -106,10 +122,10 @@ void on_window_main_destroy()
 }
 
 void addButton_clicked_cb(GtkButton *b){
-   // GtkAdjustment *adjustment = ;
-    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, -1, 99, 1, 1, 1), 1, 3), 0, rows,1,1);   
-    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, -1, 99, 1, 1, 1), 1, 3), 1, rows,1,1);
-    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, -1, 99, 1, 1, 1), 1, 3), 2, rows,1,1);
+    
+    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, 1, 2147483647, 1, 1, 1), 1, 0), 0, rows,1,1);   
+    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(0, 1, 2147483647, 1, 1, 1), 1, 3), 1, rows,1,1);
+    gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(1, -1, 2147483647, 1, 1, 1), 1, 0), 2, rows,1,1);
     rows++;
     gtk_widget_show_all (objectsGrid);
     
@@ -124,6 +140,7 @@ void removeButton_clicked_cb(GtkButton *b){
 }
 
 void executeButton_clicked_cb(GtkButton *b){
+    knapsachSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
     double **matrix = getData();
     
     /*for(int i = 1; i < rows; i++){
@@ -175,6 +192,10 @@ void initializeWindow(){
     cleanButton = GTK_WIDGET(gtk_builder_get_object(builder, "cleanButton"));
 
     executeButton = GTK_WIDGET(gtk_builder_get_object(builder, "executeButton"));
+
+    sizeSpinButton = GTK_WIDGET(gtk_builder_get_object(builder, "sizeSpinButton"));
+
+    gtk_spin_button_set_adjustment (sizeSpinButton, gtk_adjustment_new(0, 1, 2147483647, 1, 1, 1));
 
     
 
