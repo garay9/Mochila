@@ -461,6 +461,7 @@
   <object class="GtkFileChooserDialog" id="choose">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <property name="transient_for">mainWindow</property>
     <child type="titlebar">
       <placeholder/>
@@ -518,6 +519,7 @@
   <object class="GtkFileChooserDialog" id="save">
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <property name="transient_for">mainWindow</property>
     <property name="action">save</property>
     <child type="titlebar">

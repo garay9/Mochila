@@ -480,6 +480,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="cancelChoose_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -493,6 +494,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="openFile_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -536,6 +538,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="cancelSave_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -549,6 +552,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="saveFile_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
