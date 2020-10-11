@@ -263,6 +263,14 @@ void removeButton_clicked_cb(GtkButton *b){
 }
 
 void executeButton_clicked_cb(GtkButton *b){
+    for(int i = rows -1  ; i >= 0; i--){
+        gtk_grid_remove_column(dynamicGrid, i);
+    }
+
+    for(int i = 3; i >= 0 ; i--){
+        gtk_grid_remove_row(gridGreedy1, i);
+        gtk_grid_remove_row(gridGreedy2, i);
+    }
     knapsackSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
     double **matrix = getData();
     
@@ -295,6 +303,7 @@ void cancelSave_clicked_cb(GtkButton *b){
 void openFile_clicked_cb(GtkButton *b){
 	gchar* path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(fileC));
     if(strstr(path, ".sack") != NULL){
+    clean();
     FILE *fp;
 	fp = fopen(path, "r");
     char buffer[255];
@@ -308,7 +317,7 @@ void openFile_clicked_cb(GtkButton *b){
         
     }
     gtk_spin_button_set_value (sizeSpinButton,knapsackSize);
-    gtk_widget_show_all(sizeSpinButton);
+    //gtk_widget_show_all(sizeSpinButton);
     gtk_widget_show_all(objectsGrid);
 	fclose(fp);
     gtk_widget_hide(fileC);
@@ -339,6 +348,7 @@ void saveFile_clicked_cb(GtkButton *b){
         sprintf(data, "%f %f %f ", matrix[i][0], matrix[i][1], matrix[i][2]);
         fputs(data, fp);
     }
+    free(matrix);
 	fclose(fp);
 	gtk_widget_hide(fileS);
 }
