@@ -14,6 +14,7 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
+    char nombre[64];
 };
 
 void swap(struct Objeto *a, struct Objeto *b)
@@ -64,7 +65,6 @@ void greedy2(struct Objeto *objetos, int size, int pesoMax){
     char variableResult[pesoMax*2+1];
     char labelResult[sizeof(variableResult)* size];
      memset(labelResult, 0, sizeof(variableResult)* size);
-    strcpy(labelResult,"x");
     for (int i = 0; i < size && pesoActual <= pesoMax; i++)
     {
        // printf("%s :", objetos[i].nombre);

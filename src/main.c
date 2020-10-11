@@ -7,7 +7,7 @@
 
 int rows = 1;
 int cols = 3;
-int knapsachSize = 1;
+int knapsachSize = 0;
 
 GtkWidget *window;
 GtkBuilder *builder;
@@ -41,6 +41,7 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
+    char nombre[64];
 };
 
 
@@ -82,6 +83,16 @@ void showDialog(){
  *              DATA             *
  *                               *
  *********************************/
+
+struct Objeto *copyArray(struct Objeto *object, int size){
+    struct Objeto *result = malloc(rows * 50); 
+    for(int i = 0; i < size; i++){
+        result[i] = object[i];
+    }
+    return result;
+}
+
+
 
 void loadGreedy1Equation(struct Objeto *objetos, GtkWidget *grid){
     GdkColor colorBg;
@@ -152,7 +163,7 @@ void runAlgorithms(double **matrix){
 
     for(int  i = 0; i < rows -1; i++){
  
- 
+        char temp[128];
         objeto.costo =  matrix[i][0]; 
         objeto.valor =  matrix[i][1];
         if(matrix[i][2] == 0){
@@ -166,11 +177,17 @@ void runAlgorithms(double **matrix){
             objeto.cantidad = (int) matrix[i][2];
         }
         objeto.relacion = ((float) objeto.valor / (float) objeto.costo);
+        strcpy(objeto.nombre, "x");
+        sprintf(temp, "%d", i);
+        strcat(objeto.nombre, temp);
+
+        strcat(objeto.nombre, " = ");
+
         elements[i] = objeto;
        
-        char str[48];
+        char str[128*2];
         
-        char temp[48];
+        memset(temp, 0, 128);
         strcpy(str, "x");
         sprintf(temp, "%d", i);
         strcat(str, temp);
@@ -187,12 +204,16 @@ void runAlgorithms(double **matrix){
 
         
     }
+    struct Objeto *elements2 = copyArray(elements, rows-1);
+    struct Objeto *elements3 = copyArray(elements, rows-1);
+    fflush(stdout); 
     gtk_widget_show_all(dynamicGrid);   
+    printf("aiudaaaa\n");
     dinamic(elements, (rows - 1), knapsachSize);
-    loadGreedy1Equation(elements, gridGreedy1);
-    greedy1(elements, (rows -1), knapsachSize);
-    loadGreedy1Equation(elements, gridGreedy2);
-    greedy2(elements, (rows -1), knapsachSize);
+  //  loadGreedy1Equation(elements2, gridGreedy1);
+   // greedy1(elements2, (rows -1), knapsachSize);
+   // loadGreedy1Equation(elements3, gridGreedy2);
+   // greedy2(elements3, (rows -1), knapsachSize);
     free(elements);
 }
 

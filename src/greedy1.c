@@ -6,7 +6,6 @@
 #include <math.h>
 
 extern GtkWidget *gridGreedy1;
-extern GtkWidget *gridGreedy2;
 
 struct Objeto
 {
@@ -14,7 +13,22 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
+    char nombre[64];
 };
+
+void invertir(struct Objeto *objetos, int size){
+    struct Objeto temp;
+    int newSize = size/ 2;
+     for (int i = 0; i < newSize ; i++) {
+   
+    temp = objetos[i];
+    
+    objetos[i] = objetos[newSize - i - 1];
+    
+    objetos[newSize - i - 1] = temp;
+  }
+
+}
 
 void swapA(struct Objeto *a, struct Objeto *b)
 {
@@ -25,7 +39,7 @@ void swapA(struct Objeto *a, struct Objeto *b)
 
 int partitionA(struct Objeto *arr, int low, int high)
 {
-    float pivot = arr[high].relacion;
+    float pivot = arr[high].valor;
     int i = (low - 1);
 
     for (int j = low; j <= high - 1; j++)
@@ -33,7 +47,7 @@ int partitionA(struct Objeto *arr, int low, int high)
         if (arr[j].valor > pivot)
         {
             i++;
-            swap(&arr[i], &arr[j]);
+            swapA(&arr[i], &arr[j]);
         }
     }
     swapA(&arr[i + 1], &arr[high]);
@@ -55,16 +69,17 @@ void greedy1(struct Objeto *objetos, int size, int pesoMax){
     GdkColor colorFg;
     gdk_color_parse ("#E68110", &colorBg);
     gdk_color_parse ("white", &colorFg);
-
+    
     float valorTotal = 0;
     int pesoActual = 0;
     int cantidadObjeto = 0;
     quickSortA(objetos, 0, size-1);
-    
-    char variableResult[pesoMax*2+1];
+    invertir(objetos, size);
+  
     char temp[pesoMax+1];
-    char labelResult[sizeof(variableResult)* size];
-    memset(labelResult, 0, sizeof(variableResult)* size);
+    char labelResult[sizeof(pesoMax)* size];
+    memset(labelResult, 0, sizeof(pesoMax)* size);
+   
     for (int i = 0; i < size && pesoActual <= pesoMax; i++)
     {
      //   printf("Objeto: %s\n", objetos[i].nombre);
@@ -76,19 +91,14 @@ void greedy1(struct Objeto *objetos, int size, int pesoMax){
             pesoActual += objetos[i].costo;
         }
        
-        strcpy(variableResult,"x");
-        memset(temp, 0, pesoMax+1);
-        sprintf(temp, "%d", i);
-        strcat(variableResult, temp);
-        strcat(variableResult, " = ");
-        memset(temp, 0, pesoMax+1);
+     
         sprintf(temp, "%d", cantidadObjeto);
-        strcat(variableResult, temp);
-        strcat(variableResult, " ");
+        strcat(objetos[i].nombre, temp);
+        strcat(objetos[i].nombre, " ");
 
        
 
-        strcat(labelResult, variableResult);
+        strcat(labelResult, objetos[i].nombre);
         cantidadObjeto = 0;
     }
 

@@ -14,6 +14,7 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
+    char nombre[256];
 };
 
 extern GtkWidget *dynamicGrid; 
@@ -82,7 +83,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
 
         
     }
-  //  fflush(stdout);
+    fflush(stdout);
     gtk_widget_show_all(dynamicGrid); 
 }
 
