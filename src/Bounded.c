@@ -28,10 +28,21 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
     GdkColor colorFg;
     GdkColor colorBg;
     gdk_color_parse ("white", &colorFg);
+    int cantidad = 0;
+    int peso = 0;
     for (int i = 0; i < pesoMax; i++){
-        int cant = i/objetos[0].costo; 
-        Table[i][0] = objetos[0].valor * cant;
-        Llevar[i][0] = cant;
+        Table[i][0] = 0;
+        while(peso+objetos[0].costo <= i && cantidad+1 <= objetos[0].cantidad){
+            peso += objetos[0].costo;
+            cantidad++;
+            
+        }
+        Table[i][0] = objetos[0].valor * cantidad;
+        if(Table[i][0] != 0){
+            Llevar[i][0] = cantidad;
+        }else{
+            Llevar[i][0] = 0;
+        }        
     }
 
     for(int j = 1; j < productos; j++){       
