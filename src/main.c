@@ -160,14 +160,11 @@ double** getData(){
     GtkSpinButton* spin;
     fflush(stdout); 
     for(int i = 1; i < rows ; i++){
-        //printf("valor %d\n", sizeof(double)*cols);
         resultData[i-1] = (double*) malloc(sizeof(double*) * cols);
         for(int j = 0; j < cols; j++){
             spin = GTK_SPIN_BUTTON(gtk_grid_get_child_at (objectsGrid, j, i));
             resultData[i-1][j] = gtk_spin_button_get_value (spin);
-            printf("Valor %f  ", resultData[i-1][j]);
         }
-        printf("\n");
     }
     return resultData;
 }
@@ -300,7 +297,19 @@ void openFile_clicked_cb(GtkButton *b){
     if(strstr(path, ".sack") != NULL){
     FILE *fp;
 	fp = fopen(path, "r");
-
+    char buffer[255];
+    fscanf(fp,"%d %d ", &knapsackSize, &rows);
+    double matriz[rows-1][cols];
+    for(int i = 1; i < rows; i++){
+        fscanf(fp,"%lf %lf %lf\n", &matriz[i][0], &matriz[i][1], &matriz[i][2]);
+        gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(matriz[i][0], 1, 2147483647, 1, 1, 1), 1, 0), 0, i,1,1);   
+        gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(matriz[i][1], 1, 2147483647, 1, 1, 1), 1, 3), 1, i,1,1);
+        gtk_grid_attach (GTK_GRID(objectsGrid), gtk_spin_button_new(gtk_adjustment_new(matriz[i][2], -1, 2147483647, 1, 1, 1), 1, 0), 2, i,1,1);
+        
+    }
+    gtk_spin_button_set_value (sizeSpinButton,knapsackSize);
+    gtk_widget_show_all(sizeSpinButton);
+    gtk_widget_show_all(objectsGrid);
 	fclose(fp);
     gtk_widget_hide(fileC);
     }else{
@@ -314,34 +323,22 @@ void saveFile_clicked_cb(GtkButton *b){
 		showDialog("Type a name");
 		return;
 	}
-	//printf("name: %s\n", name);
-	//if(name
 	gchar* path = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(fileS));
 	strcat(path, "/" );
 	strcat(path, name);
 	strcat(path, ".sack");
-	//printf("%s", path);
 	FILE *fp;
 	fp = fopen(path, "w+");
     char data[255];
     knapsackSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
     fprintf(stderr,"%d", knapsackSize);
-    sprintf(data, "%d\n%d\n", knapsackSize, rows);
+    sprintf(data, "%d %d ", knapsackSize, rows);
     fputs(data, fp);
     double **matrix = getData();
     for(int i = 0; i < rows-1; i++){
-        //fprintf(stderr, "%d %f %d\n", matrix[i][0], matrix[i][1], matrix[i][2]);
-        sprintf(data, "%f %f %f\n", matrix[i][0], matrix[i][1], matrix[i][2]);
+        sprintf(data, "%f %f %f ", matrix[i][0], matrix[i][1], matrix[i][2]);
         fputs(data, fp);
     }
-	/*for(int i = 0; i < 9; i++){
-		for(int j = 0; j <9; j++){
-			char num[2];
-			int convertir = DynamicMatrix[i][j];
-			sprintf(num, "%s%d", " ", convertir);
-			fputs(num, fp);
-		}
-	}*/
 	fclose(fp);
 	gtk_widget_hide(fileS);
 }
