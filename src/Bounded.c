@@ -89,65 +89,7 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
 
         
     }
-  //  fflush(stdout);
 
 }
 
    
-
-   
-
-
-/*
-int main(int argc, char *argv[]){
-    struct Objeto *objetos = malloc(2048);
-    struct Objeto galletas;
-    struct Objeto medias;
-    struct Objeto botella;
-    
-    galletas.valor = 12;
-    galletas.costo = 5;
-    galletas.cantidad = 99;
-
-    botella.valor = 11;
-    botella.costo = 4;
-    botella.cantidad = 99;
-
-    medias.valor = 7;
-    medias.costo = 3;
-    medias.cantidad = 99;
-
-    objetos[0] = botella;
-    objetos[1] = medias;
-    objetos[2] = galletas;
-
-    struct Objeto *elementos = malloc(2048);
-    struct Objeto anillo;
-    struct Objeto poster;
-    struct Objeto radio;
-    struct Objeto candelabro;
-
-    anillo.valor = 15000;
-    anillo.costo = 1;
-    anillo.cantidad = 1;
-
-    poster.valor = 5000;
-    poster.costo = 4;
-    poster.cantidad = 1;
-
-    radio.valor = 9000;
-    radio.costo = 3;
-    radio.cantidad = 1;
-
-    candelabro.valor = 10000;
-    candelabro.costo = 5;
-    candelabro.cantidad = 1;
-
-    elementos[0] = candelabro;
-    elementos[1] = radio;
-    elementos[2] = poster;
-    elementos[3] = anillo;
-    dinamic(elementos, 4, 8);
-    dinamic(objetos, 3, 10);
-}
-*/

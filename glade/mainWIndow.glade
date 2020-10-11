@@ -203,6 +203,7 @@
             <property name="width_request">150</property>
             <property name="height_request">50</property>
             <property name="visible">True</property>
+            <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="image">ejecutarImage</property>
@@ -453,6 +454,63 @@
           <packing>
             <property name="x">1056</property>
             <property name="y">375</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="max">
+            <property name="width_request">100</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Maximizar:</property>
+            <attributes>
+              <attribute name="font-desc" value="Sarai Bold 20"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">621</property>
+            <property name="y">609</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="formulaLabel">
+            <property name="width_request">750</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <attributes>
+              <attribute name="font-desc" value="Sarai Bold Italic 16"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">621</property>
+            <property name="y">634</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id=" suj">
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Sujeto a:</property>
+            <attributes>
+              <attribute name="font-desc" value="Sarai Bold Italic 20"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">621</property>
+            <property name="y">656</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="sujetoLabel">
+            <property name="width_request">750</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <attributes>
+              <attribute name="font-desc" value="Sarai Bold Italic 16"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">621</property>
+            <property name="y">690</property>
           </packing>
         </child>
       </object>

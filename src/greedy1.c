@@ -128,53 +128,10 @@ void greedy1(struct Objeto *objetos, int size, int pesoMax){
 
        loadLabel(labelResult, gridGreedy1, colorBg, colorFg, 1, 0, size, 40);
         memset(temp, 0, size+1);
-        sprintf(temp, "%f", valorTotal);
+        sprintf(temp, "Z = %.3f", valorTotal);
         gdk_color_parse ("#E6C610", &colorBg);
 
         //coloca el Z máximo
         loadLabel(temp, gridGreedy1 , colorBg, colorFg, 2, 0, size, 40);
 
 }
-
-/*
-int main(int argc, char *argv[])
-{
-    struct Objeto *elementos = malloc(2048);
-    struct Objeto anillo;
-    struct Objeto poster;
-    struct Objeto radio;
-    struct Objeto candelabro;
-
-    anillo.valor = 15000;
-    anillo.costo = 1;
-    anillo.cantidad = 1;
-    anillo.relacion = (float)anillo.valor / (float)anillo.costo;
-    strcpy(anillo.nombre, "Anillo");
-
-    poster.valor = 5000;
-    poster.costo = 4;
-    poster.cantidad = 6;
-    poster.relacion = (float)poster.valor / (float)poster.costo;
-    strcpy(poster.nombre, "Poster");
-
-    radio.valor = 9000;
-    radio.costo = 3;
-    radio.cantidad = 5;
-    radio.relacion = (float)radio.valor / (float)radio.costo;
-    strcpy(radio.nombre, "Radio");
-
-    candelabro.valor = 10000;
-    candelabro.costo = 5;
-    candelabro.cantidad = 3;
-    candelabro.relacion = (float)candelabro.valor / (float)candelabro.costo;
-    strcpy(candelabro.nombre, "Candelabro");
-
-    elementos[0] = anillo;
-    elementos[1] = poster;
-    elementos[2] = radio;
-    elementos[3] = candelabro;
-    greedy1(elementos,4,60);
-    
-
-    return 0;
-}*/

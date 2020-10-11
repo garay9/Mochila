@@ -97,7 +97,7 @@ void greedy2(struct Objeto *objetos, int size, int pesoMax){
         //carga el resultado de las variables
         loadLabel(labelResult, gridGreedy2, colorBg, colorFg, 1, 0, size, 40);
         memset(variableResult, 0, pesoMax+1);
-        sprintf(variableResult, "%f", valorTotal);
+        sprintf(variableResult, "Z = %.3f", valorTotal);
         gdk_color_parse ("#E6C610", &colorBg);
       
         //coloca el Z máximo
