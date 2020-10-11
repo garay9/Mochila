@@ -14,12 +14,12 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
-    char nombre[256];
 };
 
 extern GtkWidget *dynamicGrid; 
 extern int rows;
 extern int cols;
+extern void loadLabel(char *str, GtkWidget *grid, GdkColor bg, GdkColor fg, int i, int j, int width, int height);
 void dinamic(struct Objeto *objetos, int productos, int pesoMax);
 
 void dinamic(struct Objeto *objetos, int productos, int pesoMax){
@@ -69,11 +69,9 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
         char temp[48];
         sprintf(temp, "%d", i);
         gdk_color_parse ("#BA11FF", &colorBg);
-        label =  gtk_label_new (temp);
-        gtk_widget_set_size_request(label, 50, 40);
-        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-        gtk_grid_attach (GTK_GRID(dynamicGrid), label, 0, i+1,1,1);
+        
+        //carga el número de fila 
+        loadLabel(temp, dynamicGrid, colorBg, colorFg, i+1, 0, 1, 40);
 
         for(int j = 0; j < productos; j++){
             char data[182];
@@ -85,18 +83,17 @@ void dinamic(struct Objeto *objetos, int productos, int pesoMax){
             else
                 gdk_color_parse ("#1188F0", &colorBg);
             
-            label  =  gtk_label_new (data);
-            gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-            gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-            gtk_widget_set_size_request(label, 50, 40);
-            gtk_grid_attach (GTK_GRID(dynamicGrid), label, j+1, i+1,1,1);
+            //carga las soluciones del algoritmo
+            loadLabel(data, dynamicGrid, colorBg, colorFg, i+1, j+1, 1, 40);
         }
 
         
     }
-    fflush(stdout);
-    gtk_widget_show_all(dynamicGrid); 
+  //  fflush(stdout);
+
 }
+
+   
 
    
 

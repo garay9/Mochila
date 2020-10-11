@@ -7,7 +7,7 @@
 
 int rows = 1;
 int cols = 3;
-int knapsachSize = 0;
+int knapsachSize = 1;
 
 GtkWidget *window;
 GtkBuilder *builder;
@@ -30,7 +30,7 @@ GtkWidget *executeButton;
 
 GtkWidget *sizeSpinButton;
 
-
+extern void loadLabel(char *str, GtkWidget *grid, GdkColor bg, GdkColor fg, int i, int j, int width, int height);
 extern void greedy1(struct Objeto *objetos, int size, int pesoMax);
 extern void greedy2(struct Objeto *objetos, int size, int pesoMax);
 extern void dinamic(struct Objeto *objetos, int productos, int pesoMax);
@@ -41,7 +41,6 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
-    char nombre[64];
 };
 
 
@@ -84,6 +83,32 @@ void showDialog(){
  *                               *
  *********************************/
 
+void clean(){
+    for(int i = rows -1 ; i > 0; i--){
+        gtk_grid_remove_row(objectsGrid, i);
+        
+    }
+    for(int i = rows -1  ; i >= 0; i--){
+        gtk_grid_remove_column(dynamicGrid, i);
+    }
+
+    for(int i = 3; i >= 0 ; i--){
+        gtk_grid_remove_row(gridGreedy1, i);
+        gtk_grid_remove_row(gridGreedy2, i);
+    }
+
+
+    gtk_spin_button_set_value (sizeSpinButton, 0);
+
+    gtk_widget_show_all(objectsGrid);
+    gtk_widget_show_all(dynamicGrid);
+    gtk_widget_show_all(gridGreedy1);
+    gtk_widget_show_all(gridGreedy2);
+    rows = 1;
+    knapsachSize = 1;
+
+}
+
 struct Objeto *copyArray(struct Objeto *object, int size){
     struct Objeto *result = malloc(rows * 50); 
     for(int i = 0; i < size; i++){
@@ -91,8 +116,6 @@ struct Objeto *copyArray(struct Objeto *object, int size){
     }
     return result;
 }
-
-
 
 void loadGreedy1Equation(struct Objeto *objetos, GtkWidget *grid){
     GdkColor colorBg;
@@ -103,6 +126,8 @@ void loadGreedy1Equation(struct Objeto *objetos, GtkWidget *grid){
     char equation[rows*100];
     char temp[rows*100];
     memset(equation, 0, rows*2);
+
+    //Monta la forma matemática del algoritmo
     strcpy(equation, "Z = ");
     for(int i = 0; i < rows-1 ; i++){
         memset(temp, 0, rows*100);
@@ -163,7 +188,7 @@ void runAlgorithms(double **matrix){
 
     for(int  i = 0; i < rows -1; i++){
  
-        char temp[128];
+ 
         objeto.costo =  matrix[i][0]; 
         objeto.valor =  matrix[i][1];
         if(matrix[i][2] == 0){
@@ -177,46 +202,42 @@ void runAlgorithms(double **matrix){
             objeto.cantidad = (int) matrix[i][2];
         }
         objeto.relacion = ((float) objeto.valor / (float) objeto.costo);
-        strcpy(objeto.nombre, "x");
-        sprintf(temp, "%d", i);
-        strcat(objeto.nombre, temp);
-
-        strcat(objeto.nombre, " = ");
-
         elements[i] = objeto;
        
-        char str[128*2];
+        char str[48];
         
-        memset(temp, 0, 128);
+        char temp[48];
         strcpy(str, "x");
         sprintf(temp, "%d", i);
         strcat(str, temp);
-        label =  gtk_label_new (str); 
-        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-        gtk_widget_set_size_request(label, 50, 40);
-        gtk_grid_attach (GTK_GRID(dynamicGrid), label, i+1, 0,1,1);
-        label =  gtk_label_new (temp);
-        gtk_widget_set_size_request(label, 50, 40);
-        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-        gtk_grid_attach (GTK_GRID(dynamicGrid), label, 0, i+1,1,1);
 
+        //carga las filas y columnas del algoritmo
+    
+
+        loadLabel(str, dynamicGrid, colorBg, colorFg, 0, i+1, 1, 40);
+
+
+       loadLabel(temp, dynamicGrid, colorBg, colorFg, i+1, 0, 1, 40);
         
     }
+
     struct Objeto *elements2 = copyArray(elements, rows-1);
     struct Objeto *elements3 = copyArray(elements, rows-1);
-    fflush(stdout); 
-    gtk_widget_show_all(dynamicGrid);   
-    printf("aiudaaaa\n");
+
     dinamic(elements, (rows - 1), knapsachSize);
-  //  loadGreedy1Equation(elements2, gridGreedy1);
-   // greedy1(elements2, (rows -1), knapsachSize);
-   // loadGreedy1Equation(elements3, gridGreedy2);
-   // greedy2(elements3, (rows -1), knapsachSize);
+
+    greedy1(elements2, (rows -1), knapsachSize);
+
+    greedy2(elements3, (rows -1), knapsachSize);
     free(elements);
 }
 
+/*********************************
+ *                               *
+ *                               *
+ *           GTK EVENTS          *
+ *                               *
+ *********************************/
 
 void on_window_main_destroy()
 {
@@ -245,17 +266,14 @@ void executeButton_clicked_cb(GtkButton *b){
     knapsachSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
     double **matrix = getData();
     
-    /*for(int i = 1; i < rows; i++){
-        for(int j = 0; j < 3; j++){
-            printf("Valor %f  ", matrix[i][j]);
-        }
-        printf("\n");
-    }*/
-      // printf("Oh %f\n", matrix[0][0]);
     runAlgorithms(matrix);
     free(matrix);
 
 }   
+
+void cleanButton_clicked_cb(GtkButton *b){
+    clean();
+}
 
 
 /*********************************

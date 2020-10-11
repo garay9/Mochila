@@ -6,6 +6,9 @@
 #include <math.h>
 
 extern GtkWidget *gridGreedy1;
+extern GtkWidget *gridGreedy2;
+
+extern void loadGreedy1Equation(struct Objeto *objetos, GtkWidget *grid);
 
 struct Objeto
 {
@@ -13,8 +16,20 @@ struct Objeto
     int costo;
     int cantidad;
     float relacion;
-    char nombre[64];
 };
+
+void loadLabel(char *str, GtkWidget *grid, GdkColor bg, GdkColor fg, int i, int j, int width, int height){
+        GtkWidget *label;
+
+        label =  gtk_label_new (str); 
+        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &bg);
+        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &fg);
+        gtk_widget_set_size_request(label, width*50, 40);
+        gtk_grid_attach (GTK_GRID(grid), label, j, i,1,1);
+         gtk_widget_show_all(grid);
+
+}
+
 
 void invertir(struct Objeto *objetos, int size){
     struct Objeto temp;
@@ -47,7 +62,7 @@ int partitionA(struct Objeto *arr, int low, int high)
         if (arr[j].valor > pivot)
         {
             i++;
-            swapA(&arr[i], &arr[j]);
+            swap(&arr[i], &arr[j]);
         }
     }
     swapA(&arr[i + 1], &arr[high]);
@@ -69,20 +84,21 @@ void greedy1(struct Objeto *objetos, int size, int pesoMax){
     GdkColor colorFg;
     gdk_color_parse ("#E68110", &colorBg);
     gdk_color_parse ("white", &colorFg);
-    
+
     float valorTotal = 0;
     int pesoActual = 0;
     int cantidadObjeto = 0;
     quickSortA(objetos, 0, size-1);
-    invertir(objetos, size);
-  
+    invertir(objetos, size - 1);
+    loadGreedy1Equation(objetos, gridGreedy1);
+    char variableResult[pesoMax*2+1];
     char temp[pesoMax+1];
-    char labelResult[sizeof(pesoMax)* size];
-    memset(labelResult, 0, sizeof(pesoMax)* size);
-   
+    char labelResult[sizeof(variableResult)* size];
+    memset(labelResult, 0, sizeof(variableResult)* size);
+    
     for (int i = 0; i < size && pesoActual <= pesoMax; i++)
     {
-     //   printf("Objeto: %s\n", objetos[i].nombre);
+
         while (objetos[i].cantidad != 0 && pesoActual + objetos[i].costo <= pesoMax)
         {
             objetos[i].cantidad -= 1;  
@@ -91,34 +107,33 @@ void greedy1(struct Objeto *objetos, int size, int pesoMax){
             pesoActual += objetos[i].costo;
         }
        
-     
+       //coloca la cantidad óptima para cada variable
+        strcpy(variableResult,"x");
+        memset(temp, 0, pesoMax+1);
+        sprintf(temp, "%d", i);
+        strcat(variableResult, temp);
+        strcat(variableResult, " = ");
+        memset(temp, 0, pesoMax+1);
         sprintf(temp, "%d", cantidadObjeto);
-        strcat(objetos[i].nombre, temp);
-        strcat(objetos[i].nombre, " ");
+        strcat(variableResult, temp);
+        strcat(variableResult, " ");
 
        
 
-        strcat(labelResult, objetos[i].nombre);
+        strcat(labelResult, variableResult);
         cantidadObjeto = 0;
     }
 
-        GtkWidget *label;
+       //carga el resultado de las variables
 
-        label =  gtk_label_new (labelResult); 
-        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-        gtk_widget_set_size_request(label, size*50, 40);
-        gtk_grid_attach (GTK_GRID(gridGreedy1), label, 0, 1,1,1);
-        
+       loadLabel(labelResult, gridGreedy1, colorBg, colorFg, 1, 0, size, 40);
         memset(temp, 0, size+1);
         sprintf(temp, "%f", valorTotal);
         gdk_color_parse ("#E6C610", &colorBg);
-        label =  gtk_label_new (temp);
-        gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorFg);
-        gtk_widget_modify_bg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &colorBg);
-        gtk_grid_attach (GTK_GRID(gridGreedy1), label, 0, 2,1,1);
 
-        gtk_widget_show_all(gridGreedy1); 
+        //coloca el Z máximo
+        loadLabel(temp, gridGreedy1 , colorBg, colorFg, 2, 0, size, 40);
+
 }
 
 /*
