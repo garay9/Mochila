@@ -7,7 +7,7 @@
 
 int rows = 1;
 int cols = 3;
-int knapsachSize = 1;
+int knapsackSize = 1;
 
 GtkWidget *window;
 GtkBuilder *builder;
@@ -29,6 +29,9 @@ GtkWidget *cleanButton;
 GtkWidget *executeButton;
 
 GtkWidget *sizeSpinButton;
+
+GtkWidget* fileC;
+GtkWidget* fileS;
 
 extern void loadLabel(char *str, GtkWidget *grid, GdkColor bg, GdkColor fg, int i, int j, int width, int height);
 extern void greedy1(struct Objeto *objetos, int size, int pesoMax);
@@ -52,7 +55,7 @@ struct Objeto
  *                               *
  *********************************/
 
-void showDialog(){
+void showDialog(char* msg){
     GtkWidget *dialog;
     GtkWidget *content_area;
     GtkWidget *label;
@@ -67,7 +70,7 @@ void showDialog(){
                                         NULL);
 
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  label = gtk_label_new ("Quantity cannot be 0 :0");
+  label = gtk_label_new (msg);
   gtk_container_add (GTK_CONTAINER (content_area), label);
 
   gtk_widget_show_all (dialog);
@@ -105,7 +108,7 @@ void clean(){
     gtk_widget_show_all(gridGreedy1);
     gtk_widget_show_all(gridGreedy2);
     rows = 1;
-    knapsachSize = 1;
+    knapsackSize = 1;
 
 }
 
@@ -162,9 +165,9 @@ double** getData(){
         for(int j = 0; j < cols; j++){
             spin = GTK_SPIN_BUTTON(gtk_grid_get_child_at (objectsGrid, j, i));
             resultData[i-1][j] = gtk_spin_button_get_value (spin);
-            //printf("Valor %f  ", resultData[i-1][j]);
+            printf("Valor %f  ", resultData[i-1][j]);
         }
-        //printf("\n");
+        printf("\n");
     }
     return resultData;
 }
@@ -192,7 +195,7 @@ void runAlgorithms(double **matrix){
         objeto.costo =  matrix[i][0]; 
         objeto.valor =  matrix[i][1];
         if(matrix[i][2] == 0){
-            showDialog();
+            showDialog("Quantity cannot be 0 :0");
             return;
         } 
         else if(matrix[i][2] == -1){
@@ -224,11 +227,11 @@ void runAlgorithms(double **matrix){
     struct Objeto *elements2 = copyArray(elements, rows-1);
     struct Objeto *elements3 = copyArray(elements, rows-1);
 
-    dinamic(elements, (rows - 1), knapsachSize);
+    dinamic(elements, (rows - 1), knapsackSize);
 
-    greedy1(elements2, (rows -1), knapsachSize);
+    greedy1(elements2, (rows -1), knapsackSize);
 
-    greedy2(elements3, (rows -1), knapsachSize);
+    greedy2(elements3, (rows -1), knapsackSize);
     free(elements);
 }
 
@@ -255,15 +258,15 @@ void addButton_clicked_cb(GtkButton *b){
 }
 
 void removeButton_clicked_cb(GtkButton *b){
-    if(rows != 0){
-        gtk_grid_remove_row(objectsGrid, rows);
+    if(rows > 1){
+        gtk_grid_remove_row(objectsGrid, rows-1);
         gtk_widget_show_all (objectsGrid);
         rows--;
     }
 }
 
 void executeButton_clicked_cb(GtkButton *b){
-    knapsachSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
+    knapsackSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
     double **matrix = getData();
     
     runAlgorithms(matrix);
@@ -275,6 +278,73 @@ void cleanButton_clicked_cb(GtkButton *b){
     clean();
 }
 
+void chooseFileButton_clicked_cb(GtkButton *b){
+	gtk_widget_show(fileC);
+}
+
+void saveFileButton_clicked_cb(GtkButton *b){
+	gtk_widget_show(fileS);
+}
+
+
+void cancelChoose_clicked_cb(GtkButton *b){
+	gtk_widget_hide(fileC);
+}
+
+void cancelSave_clicked_cb(GtkButton *b){
+	gtk_widget_hide(fileS);
+}
+
+void openFile_clicked_cb(GtkButton *b){
+	gchar* path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(fileC));
+    if(strstr(path, ".sack") != NULL){
+    FILE *fp;
+	fp = fopen(path, "r");
+
+	fclose(fp);
+    gtk_widget_hide(fileC);
+    }else{
+        showDialog("Archivo inválido");
+    }
+}
+
+void saveFile_clicked_cb(GtkButton *b){
+	gchar* name = gtk_file_chooser_get_current_name (GTK_FILE_CHOOSER(fileS));
+	if(!strcmp(name, "")){
+		showDialog("Type a name");
+		return;
+	}
+	//printf("name: %s\n", name);
+	//if(name
+	gchar* path = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(fileS));
+	strcat(path, "/" );
+	strcat(path, name);
+	strcat(path, ".sack");
+	//printf("%s", path);
+	FILE *fp;
+	fp = fopen(path, "w+");
+    char data[255];
+    knapsackSize = gtk_spin_button_get_value_as_int(sizeSpinButton);
+    fprintf(stderr,"%d", knapsackSize);
+    sprintf(data, "%d\n%d\n", knapsackSize, rows);
+    fputs(data, fp);
+    double **matrix = getData();
+    for(int i = 0; i < rows-1; i++){
+        //fprintf(stderr, "%d %f %d\n", matrix[i][0], matrix[i][1], matrix[i][2]);
+        sprintf(data, "%f %f %f\n", matrix[i][0], matrix[i][1], matrix[i][2]);
+        fputs(data, fp);
+    }
+	/*for(int i = 0; i < 9; i++){
+		for(int j = 0; j <9; j++){
+			char num[2];
+			int convertir = DynamicMatrix[i][j];
+			sprintf(num, "%s%d", " ", convertir);
+			fputs(num, fp);
+		}
+	}*/
+	fclose(fp);
+	gtk_widget_hide(fileS);
+}
 
 /*********************************
  *                               *
@@ -326,6 +396,8 @@ void initializeWindow(){
 
     gtk_spin_button_set_adjustment (sizeSpinButton, gtk_adjustment_new(0, 1, 2147483647, 1, 1, 1));
 
+    fileC = GTK_WIDGET(gtk_builder_get_object(builder, "choose"));
+	fileS = GTK_WIDGET(gtk_builder_get_object(builder, "save"));
     
 
     GdkColor color;
