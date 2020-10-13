@@ -70,7 +70,7 @@ void showDialog(char *msg)
     dialog = gtk_dialog_new_with_buttons("!!!!",
                                          window,
                                          GTK_DIALOG_MODAL,
-                                         "pum pum pum",
+                                         "Ok",
                                          GTK_RESPONSE_OK,
                                          NULL);
 
@@ -413,7 +413,7 @@ void openFile_clicked_cb(GtkButton *b)
     }
     else
     {
-        showDialog("Archivo inválido");
+        showDialog("Invalid file extension");
     }
 }
 

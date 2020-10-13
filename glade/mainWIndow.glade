@@ -460,7 +460,7 @@
           <object class="GtkLabel" id="max">
             <property name="width_request">100</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Maximizar:</property>
+            <property name="label" translatable="yes">Maximize:</property>
             <attributes>
               <attribute name="font-desc" value="Sarai Bold 20"/>
             </attributes>
@@ -487,7 +487,7 @@
         <child>
           <object class="GtkLabel" id=" suj">
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Sujeto a:</property>
+            <property name="label" translatable="yes">Subject to:</property>
             <attributes>
               <attribute name="font-desc" value="Sarai Bold Italic 20"/>
             </attributes>
@@ -511,6 +511,21 @@
           <packing>
             <property name="x">621</property>
             <property name="y">690</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Exit</property>
+            <property name="width_request">65</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">122</property>
+            <property name="y">650</property>
           </packing>
         </child>
       </object>
